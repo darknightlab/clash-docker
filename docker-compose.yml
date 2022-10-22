@@ -6,7 +6,7 @@ services:
         build: .
         container_name: clash
         restart: always
-        command: ["-d", "/root/.config/clash", "-ext-ui", "/root/.config/clash/dashboard"]
+        command: ["-d", "/root/.config/clash", "-ext-ui", "/dashboard"] # ["-ext-ctl", "127.0.0.1:9090"]
         environment:
             - IPV6=true
             - CONFIG_URL=
