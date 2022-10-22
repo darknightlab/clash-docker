@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+    clash:
+        image: canoziia/clash-docker:latest
+        build: .
+        container_name: clash
+        restart: always
+        command: ["-d", "/root/.config/clash", "-ext-ui", "/root/.config/clash/dashboard"]
+        environment:
+            - IPV6=true
+            - CONFIG_URL=
+        network_mode: host
+        volumes:
+            - ./config:/root/.config/clash
+    # clash-yacd:
+    #     image: haishanh/yacd:latest
+    #     container_name: clash-yacd
+    #     restart: always
+    #     ports:
+    #         - 15700:80
