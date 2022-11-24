@@ -10,6 +10,9 @@ services:
         network_mode: host
         environment:
             - IPV6=true
+            - MIXED_PORT=7890
+            - SOCKS_PORT=7891
+            - HTTP_PORT=7892
             - CONFIG_URL=
         volumes:
             - ./config:/root/.config/clash
