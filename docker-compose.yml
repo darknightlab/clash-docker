@@ -1,5 +1,7 @@
 version: "3"
 
+# Please copy clash.example.env to clash.env and fill in the variables
+
 services:
     clash:
         image: ghcr.io/darknightlab/clash-docker:main
