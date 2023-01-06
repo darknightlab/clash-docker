@@ -4,11 +4,12 @@ import yaml
 ConfigPath = os.getenv("CONFIG_PATH")
 AllowFields = {
     "IPV6": {"name": "ipv6", "type": bool},
+    "MIXED_PORT": {"name": "mixed-port", "type": int},
     "SOCKS_PORT": {"name": "socks-port", "type": int},
     "HTTP_PORT": {"name": "port", "type": int},
-    "MIXED_PORT": {"name": "mixed-port", "type": int},
     "EXTERNAL_CONTROLLER": {"name": "external-controller", "type": str},
-    "ALLOW_LAN": {"name": "allow-lan", "type": bool}
+    "ALLOW_LAN": {"name": "allow-lan", "type": bool},
+    "BIND_ADDRESS": {"name": "bind-address", "type": str},
 }
 
 with open(ConfigPath, "r") as f:
