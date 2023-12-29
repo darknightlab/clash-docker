@@ -14,9 +14,3 @@ services:
             - clash.env
         volumes:
             - ./config:/root/.config/clash
-    # clash-yacd:
-    #     image: haishanh/yacd:latest
-    #     container_name: clash-yacd
-    #     restart: always
-    #     ports:
-    #         - 15700:80
