@@ -9,6 +9,9 @@ RUN apk add --no-cache curl unzip && \
     chmod +x /entrypoint.sh && \
     rm -rf /gh-pages.zip && \
     apk del unzip
+RUN mkdir /geox && \
+    curl -o /geox/geoip.metadb -L https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.metadb && \
+    curl -o /geox/Country.mmdb -L https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb
 RUN apk add python3 py3-yaml
 ENTRYPOINT ["/entrypoint.sh"]
 CMD [ "-ext-ui", "/dashboard" ]

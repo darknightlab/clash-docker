@@ -1,5 +1,6 @@
 #!/bin/sh
-export CONFIG_PATH=/root/.config/clash/config.yaml
+export CONFIG_DIR=/root/.config/clash
+export CONFIG_PATH=$CONFIG_DIR/config.yaml
 
 download_config() {
     curl -s -o $CONFIG_PATH -L "$CONFIG_URL"
@@ -13,6 +14,7 @@ update_config() {
     done
 }
 
+cp /geox/* $CONFIG_DIR/
 download_config
 update_config &
 
