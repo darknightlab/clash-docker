@@ -13,12 +13,15 @@ AllowFields = {
     "ALLOW_LAN": {"name": "allow-lan", "type": bool},
     "BIND_ADDRESS": {"name": "bind-address", "type": str},
 }
+# extra fields: dns.listen "DNS_LISTEN"
 
 with open(ConfigPath, "r") as f:
     config = yaml.safe_load(f)
     for key, value in AllowFields.items():
         if os.getenv(key):
             config[value["name"]] = value["type"](os.getenv(key))
+    if os.getenv("DNS_LISTEN") and "dns" in config:
+        config["dns"]["listen"] = str(os.getenv("DNS_LISTEN"))
 
 with open(ConfigPath, "w") as f:
     yaml.safe_dump(config, f, allow_unicode=True, default_flow_style=False)
