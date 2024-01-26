@@ -7,6 +7,8 @@ AllowFields = {
     "MIXED_PORT": {"name": "mixed-port", "type": int},
     "SOCKS_PORT": {"name": "socks-port", "type": int},
     "HTTP_PORT": {"name": "port", "type": int},
+    "REDIR_PORT": {"name": "redir-port", "type": int},
+    "TPROXY_PORT": {"name": "tproxy-port", "type": int},
     "EXTERNAL_CONTROLLER": {"name": "external-controller", "type": str},
     "ALLOW_LAN": {"name": "allow-lan", "type": bool},
     "BIND_ADDRESS": {"name": "bind-address", "type": str},
