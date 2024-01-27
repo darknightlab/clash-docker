@@ -17,13 +17,30 @@ update_config() {
     while true; do
         sleep $UPDATE_INTERVAL
         download_config
-        curl "127.0.0.1$EXTERNAL_CONTROLLER/configs?force=true" -X PUT -d '{"path": "'$CONFIG_PATH'", "payload": ""}'
+        curl -H "Authorization: Bearer $SECRET" "$EXTERNAL_CONTROLLER/configs?force=true" -X PUT -d '{"path": "'$CONFIG_PATH'", "payload": ""}'
     done
+}
+
+set_network() {
+    nft -f /clash.nft
+    ip rule add fwmark 7890 table 78904 ; ip route add local default dev lo table 78904
+    ip -6 rule add fwmark 7890 table 78906 ; ip -6 route add local ::/0 dev lo table 78906
+}
+
+cleanup_network() {
+    ip rule del fwmark 7890 table 78904 ; ip route del local default dev lo table 78904
+    ip -6 rule del fwmark 7890 table 78906 ; ip -6 route del local ::/0 dev lo table 78906
+    nft flush table inet clash
 }
 
 cp /geox/* $CONFIG_DIR/
 download_config
 update_config &
+
+if [ "$TRANSPARENT_PROXY" = "true" ]; then
+    set_network
+    trap cleanup_network EXIT
+fi
 
 python3 /setenv.py
 /mihomo "$@"

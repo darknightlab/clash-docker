@@ -10,7 +10,9 @@ AllowFields = {
     "REDIR_PORT": {"name": "redir-port", "type": int},
     "TPROXY_PORT": {"name": "tproxy-port", "type": int},
     "EXTERNAL_CONTROLLER": {"name": "external-controller", "type": str},
+    "SECRET": {"name": "secret", "type": str},
     "ALLOW_LAN": {"name": "allow-lan", "type": bool},
+    "LAN_ALLOWED_IPS": {"name": "lan-allowed-ips", "type": exec},
     "BIND_ADDRESS": {"name": "bind-address", "type": str},
 }
 # extra fields: dns.listen "DNS_LISTEN"
