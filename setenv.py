@@ -12,7 +12,7 @@ AllowFields = {
     "EXTERNAL_CONTROLLER": {"name": "external-controller", "type": str},
     "SECRET": {"name": "secret", "type": str},
     "ALLOW_LAN": {"name": "allow-lan", "type": bool},
-    "LAN_ALLOWED_IPS": {"name": "lan-allowed-ips", "type": exec},
+    "LAN_ALLOWED_IPS": {"name": "lan-allowed-ips", "type": eval},
     "BIND_ADDRESS": {"name": "bind-address", "type": str},
 }
 # extra fields: dns.listen "DNS_LISTEN"
