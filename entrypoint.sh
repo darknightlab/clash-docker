@@ -23,13 +23,13 @@ update_config() {
 
 set_network() {
     nft -f /clash.nft
-    ip rule add fwmark 7890 table 78904 ; ip route add local default dev lo table 78904
-    ip -6 rule add fwmark 7890 table 78906 ; ip -6 route add local ::/0 dev lo table 78906
+    ip rule add fwmark 7890 table 784 ; ip route add local default dev lo table 784
+    ip -6 rule add fwmark 7890 table 786 ; ip -6 route add local ::/0 dev lo table 786
 }
 
 cleanup_network() {
-    ip rule del fwmark 7890 table 78904 ; ip route del local default dev lo table 78904
-    ip -6 rule del fwmark 7890 table 78906 ; ip -6 route del local ::/0 dev lo table 78906
+    ip rule del fwmark 7890 table 784 ; ip route del local default dev lo table 784
+    ip -6 rule del fwmark 7890 table 786 ; ip -6 route del local ::/0 dev lo table 786
     nft flush table inet clash
 }
 
