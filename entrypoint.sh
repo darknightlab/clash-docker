@@ -7,6 +7,7 @@ download_config() {
     if curl -m 60 -s -o "$TEMP_CONFIG" -L "$CONFIG_URL"; then
         mv "$TEMP_CONFIG" "$CONFIG_PATH"
         echo "Downloaded config from $CONFIG_URL"
+        python3 /setenv.py
     else
         rm -f "$TEMP_CONFIG"
         echo "Failed to download config from $CONFIG_URL"
@@ -30,17 +31,28 @@ set_network() {
 cleanup_network() {
     ip rule del fwmark 7890 table 784 ; ip route del local default dev lo table 784
     ip -6 rule del fwmark 7890 table 786 ; ip -6 route del local ::/0 dev lo table 786
-    nft flush table inet clash
+    nft delete table inet clash
+}
+
+exit_func() {
+    if [ "$TRANSPARENT_PROXY" = "true" ]; then
+        cleanup_network
+    fi
+    kill $MIHOMO_PID
+    echo "clash will stop now"
+    exit 0
 }
 
 cp /geox/* $CONFIG_DIR/
 download_config
 update_config &
 
+
 if [ "$TRANSPARENT_PROXY" = "true" ]; then
     set_network
-    trap cleanup_network EXIT
 fi
+trap exit_func SIGTERM
 
-python3 /setenv.py
-/mihomo "$@"
+/mihomo "$@" &
+MIHOMO_PID=$!
+wait
