@@ -29,31 +29,31 @@ table inet clash {
         }
     }
 
-	chain clash-tproxy {
-		fib daddr type { unspec, local, anycast, multicast } return
-		ip daddr @local_ipv4 return
-		ip6 daddr @local_ipv6 return
-		udp dport { 53, 123 } return
+    chain clash-tproxy {
+        fib daddr type { unspec, local, anycast, multicast } return
+        ip daddr @local_ipv4 return
+        ip6 daddr @local_ipv6 return
+        udp dport { 53, 123 } return
         meta l4proto { tcp, udp } meta mark set 7890 tproxy to :7894
         # ip rule add fwmark 1 table 100 ; ip route add local default dev lo table 100
         # ip -6 rule add fwmark 1 table 101 ; ip -6 route add local ::/0 dev lo table 101
-	}
+    }
 
-#	chain clash-mark {
-#		fib daddr type { unspec, local, anycast, multicast } return
-#		ip daddr @local_ipv4 return
-#		ip6 daddr @local_ipv6 return
-#		udp dport { 53, 123 } return
-#		meta mark set 7890
-#	}
+#    chain clash-mark {
+#        fib daddr type { unspec, local, anycast, multicast } return
+#        ip daddr @local_ipv4 return
+#        ip6 daddr @local_ipv6 return
+#        udp dport { 53, 123 } return
+#        meta mark set 7890
+#    }
 #
-#	chain mangle-output {
-#		type route hook output priority mangle; policy accept;
-#		meta l4proto { tcp, udp } skgid != 997 ct direction original jump clash-mark
-#	}
+#    chain mangle-output {
+#        type route hook output priority mangle; policy accept;
+#        meta l4proto { tcp, udp } skgid != 997 ct direction original jump clash-mark
+#    }
 
-	chain mangle-prerouting {
-		type filter hook prerouting priority mangle; policy accept;
-		iifname { enp6s18 } meta l4proto { tcp, udp } ct direction original jump clash-tproxy
-	}
+    chain mangle-prerouting {
+        type filter hook prerouting priority mangle; policy accept;
+        meta l4proto { tcp, udp } ct direction original jump clash-tproxy
+    }
 }
