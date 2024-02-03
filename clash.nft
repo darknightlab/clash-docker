@@ -54,6 +54,6 @@ table inet clash {
 
     chain mangle-prerouting {
         type filter hook prerouting priority mangle; policy accept;
-        meta l4proto { tcp, udp } ct direction original jump clash-tproxy
+        iifname $iifname_clash meta l4proto { tcp, udp } ct direction original jump clash-tproxy
     }
 }

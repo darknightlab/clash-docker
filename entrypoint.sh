@@ -23,7 +23,8 @@ update_config() {
 }
 
 set_network() {
-    nft -f /clash.nft
+    sed "1i define iifname_clash={$TPROXY_INTERFACES}" /clash.nft > /clash.nft.autogen
+    nft -f /clash.nft.autogen
     ip rule add fwmark 7890 table 784 ; ip route add local default dev lo table 784
     ip -6 rule add fwmark 7890 table 786 ; ip -6 route add local ::/0 dev lo table 786
 }
