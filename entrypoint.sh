@@ -3,14 +3,19 @@ export CONFIG_DIR=/root/.config/clash
 export CONFIG_PATH=$CONFIG_DIR/config.yaml
 
 download_config() {
-    TEMP_CONFIG=$CONFIG_PATH.temp
-    if curl -m 60 -s -o "$TEMP_CONFIG" -L "$CONFIG_URL"; then
-        mv "$TEMP_CONFIG" "$CONFIG_PATH"
-        echo "Downloaded config from $CONFIG_URL"
-        python3 /setenv.py
+    if [ -f "$CONFIG_PATH" ] && [ $(( $(date +%s) - $(date -r "$CONFIG_PATH" +%s) )) -lt $UPDATE_INTERVAL ]; then
+        echo "config is up to date, no need to download"
     else
-        rm -f "$TEMP_CONFIG"
-        echo "Failed to download config from $CONFIG_URL"
+        echo "config is outdated, downloading"
+        TEMP_CONFIG=$CONFIG_PATH.temp
+        if [ $(curl -m 60 -s -o "$TEMP_CONFIG" -L "$CONFIG_URL" -w "%{http_code}") = "200" ]; then
+            mv "$TEMP_CONFIG" "$CONFIG_PATH"
+            echo "Downloaded config from $CONFIG_URL"
+            python3 /setenv.py
+        else
+            echo "Failed to download config from $CONFIG_URL"
+            rm -f "$TEMP_CONFIG" 2>/dev/null
+        fi
     fi
 }
 
