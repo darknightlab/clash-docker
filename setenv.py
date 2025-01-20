@@ -16,9 +16,26 @@ AllowFields = {
     "BIND_ADDRESS": {"name": "bind-address", "type": str},
 }
 # extra fields: dns.listen "DNS_LISTEN"
+TunConfig="""
+tun:
+  enable: false
+  stack: system
+  auto-route: true
+  auto-redirect: true
+  auto-detect-interface: true
+  device: mihomo
+  strict-route: true
+  gso: true
+  route-exclude-address:
+    - 10.0.0.0/8
+    - 192.168.0.0/16
+    - fc00::/7
+"""
 
 with open(ConfigPath, "r") as f:
-    config = yaml.safe_load(f)
+    content=f.read()
+    content+=TunConfig
+    config = yaml.safe_load(content)
     for key, value in AllowFields.items():
         if os.getenv(key):
             config[value["name"]] = value["type"](os.getenv(key))
