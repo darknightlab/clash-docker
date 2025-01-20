@@ -1,7 +1,7 @@
 version: "3"
 
 # Please copy clash.example.env to clash.env and fill in the variables
-# if you set TRANSPARENT_PROXY to true, please enable ip_forward and ipv6_forward in your host
+# if you set TUN to true and want to work as a gateway, please enable ip_forward and ipv6_forward in your host
 # sysctl -w net.ipv4.ip_forward=1
 # sysctl -w net.ipv6.conf.all.forwarding=1
 
@@ -11,10 +11,12 @@ services:
     # build: .
     container_name: clash
     restart: always
-    command: ["-d", "/root/.config/clash", "-ext-ui", "/dashboard"] # ["-ext-ctl", "127.0.0.1:9090"]
+    # command: [ "-d", "/root/.config/clash", "-ext-ui", "/dashboard", "-ext-ctl", "127.0.0.1:9090"] # please set ext-ctl in env not here
     network_mode: host
     cap_add:
       - NET_ADMIN
+    devices:
+      - /dev/net/tun
     env_file:
       - clash.env
     volumes:

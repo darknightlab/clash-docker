@@ -27,23 +27,7 @@ update_config() {
     done
 }
 
-set_network() {
-    sed "1i define iifname_clash={$TPROXY_INTERFACES}" /clash.nft > /clash.nft.autogen
-    nft -f /clash.nft.autogen
-    ip rule add fwmark 7890 table 784 ; ip route add local default dev lo table 784
-    ip -6 rule add fwmark 7890 table 786 ; ip -6 route add local ::/0 dev lo table 786
-}
-
-cleanup_network() {
-    ip rule del fwmark 7890 table 784 ; ip route del local default dev lo table 784
-    ip -6 rule del fwmark 7890 table 786 ; ip -6 route del local ::/0 dev lo table 786
-    nft delete table inet clash
-}
-
 exit_func() {
-    if [ "$TRANSPARENT_PROXY" = "true" ]; then
-        cleanup_network
-    fi
     kill $MIHOMO_PID
     echo "clash will stop now"
     exit 0
@@ -53,10 +37,6 @@ cp /geox/* $CONFIG_DIR/
 download_config
 update_config &
 
-
-if [ "$TRANSPARENT_PROXY" = "true" ]; then
-    set_network
-fi
 trap exit_func SIGTERM
 
 /mihomo "$@" &
