@@ -33,9 +33,9 @@ tun:
 """
 
 with open(ConfigPath, "r") as f:
-    content=f.read()
-    content+=TunConfig
-    config = yaml.safe_load(content)
+    config = yaml.safe_load(f)
+    tunConfig=yaml.safe_load(TunConfig)
+    config["tun"]=tunConfig["tun"]
     for key, value in AllowFields.items():
         if os.getenv(key):
             config[value["name"]] = value["type"](os.getenv(key))
