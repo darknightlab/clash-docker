@@ -40,7 +40,7 @@ with open(ConfigPath, "r") as f:
     if os.getenv("DNS_LISTEN") and "dns" in config:
         config["dns"]["listen"] = str(os.getenv("DNS_LISTEN"))
     if os.getenv("TUN") and "tun" in config:
-        config["tun"]["enable"] = bool(os.getenv("TUN"))
+        config["tun"]["enable"] = os.getenv("TUN").lower() == "true"
 
 with open(ConfigPath, "w") as f:
     yaml.safe_dump(config, f, allow_unicode=True, default_flow_style=False)
